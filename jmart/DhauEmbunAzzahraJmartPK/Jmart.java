@@ -3,7 +3,7 @@ package DhauEmbunAzzahraJmartPK;
 
 public class Jmart
 {
-    public static int getPromo(){
+         public static int getPromo(){
         return 0;
     }
     
@@ -29,6 +29,19 @@ public class Jmart
         else{
             return (int)((100.0f-discountPercentage)*price/100);
         }
+    }
+    
+    public static int getOriginalPrice(int discountedPrice, float discountPercentage){
+        return (int) ((100+discountPercentage)*discountedPrice)/100;
+    }
+    public static float getCommissionMultiplier(){
+        return 0.05f;
+    }
+    public static int getAdjustedPrice(int price){
+        return (int) 1.05*price;
+    }
+    public static int getAdminFee(int price){
+        return (int) (price*getCommissionMultiplier());
     }
     public static void main(String[] args) {
         System.out.println(getDiscountPercentage(1000, 0));
