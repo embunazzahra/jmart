@@ -9,7 +9,7 @@ package DhauEmbunAzzahraJmartPK;
  */
 public class Product
 {
-    private int idCounter;
+    private static int idCounter = 0;
     public int id;
     public String name;
     public int weight;
@@ -25,5 +25,6 @@ public class Product
         this.priceTag = priceTag;
         this.category = category;
         this.rating = new ProductRating();
+        this.id = idCounter++;
     }
 }
