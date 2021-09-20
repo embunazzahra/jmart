@@ -43,7 +43,7 @@ minimum){
     public double apply(PriceTag priceTag){
         used = true;
         if (type == Type.DISCOUNT){
-            return priceTag.getAdjustedPrice() * (100.0-cut);
+            return priceTag.getAdjustedPrice() * (100.0-cut)/100;
         }
         else{
             return priceTag.getAdjustedPrice() - cut;
