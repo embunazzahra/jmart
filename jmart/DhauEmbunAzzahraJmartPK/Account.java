@@ -1,35 +1,27 @@
 package DhauEmbunAzzahraJmartPK;
 
 
-/**
- * Write a description of class Account here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-public class Account
-{
-    // instance variables - replace the example below with your own
-    private int x;
 
-    /**
-     * Constructor for objects of class Account
-     */
-    public Account()
-    {
-        // initialise instance variables
-        x = 0;
+public class Account extends Recognizable implements FileParser{
+    public String name;
+    public String email;
+    public String password;
+    
+    public Account(int id, String name, String email, String password){
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+    
+    @Override
+    public boolean read(String content){
+        return true;
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    @Override
+    public Object write() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
+
