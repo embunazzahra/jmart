@@ -1,7 +1,6 @@
 package DhauEmbunAzzahraJmartPK;
 
 
-
 public class Account extends Recognizable implements FileParser{
     public String name;
     public String email;
@@ -21,7 +20,6 @@ public class Account extends Recognizable implements FileParser{
 
     @Override
     public Object write() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }
-

@@ -8,7 +8,14 @@ public class Complaint extends Transaction implements FileParser{
     public String desc;
     
     public Complaint(int id, Payment payment, String desc){
-        //super(id);
+        super(id, payment.buyerId, payment.storeId);
+        this.paymentId = payment.id;
+        this.desc = desc;
+    }
+    
+    public Complaint(int id, int buyerId, int storeId, int paymentId, String desc){
+        super(id, buyerId, storeId);
+        this.paymentId = paymentId;
         this.desc = desc;
     }
     @Override
@@ -23,5 +30,10 @@ public class Complaint extends Transaction implements FileParser{
     @Override
     public boolean read(String content){
         return true;
+    }
+
+    @Override
+    public Object write() {
+        return null;
     }
 }

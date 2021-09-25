@@ -2,8 +2,7 @@ package DhauEmbunAzzahraJmartPK;
 
 
 
-public class Product extends Recognizable {
-    private static int idCounter = 0;
+public class Product extends Recognizable implements FileParser{
     public int storeId;
     public String name;
     public int weight;
@@ -21,6 +20,25 @@ public class Product extends Recognizable {
         this.category = category;
         this.rating = new ProductRating();
         this.storeId = storeId;
-        idCounter++;
+    }
+    public Product(int id, Store store, String name, int weight, boolean conditionUsed,
+                    PriceTag priceTag, ProductCategory category){
+        super(id);
+        this.name = name;
+        this.weight = weight;
+        this.conditionUsed=conditionUsed;
+        this.priceTag = priceTag;
+        this.category = category;
+        this.rating = new ProductRating();
+        this.storeId = store.id;
+    }
+    @Override
+    public boolean read(String content){
+        return true;
+    }
+
+    @Override
+    public Object write() {
+        return null;
     }
 }

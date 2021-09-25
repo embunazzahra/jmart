@@ -7,15 +7,15 @@ public class Recognizable {
    }
    
    public boolean equals(Object object){
-       return true;
-   }
-   
-   public boolean equals(Recognizable recognizable){
-       if (this.id == recognizable.id){
-           return true;
+       if (object instanceof Recognizable){
+           return equals(object);
        }
        else{
            return false;
        }
+   }
+   
+   public boolean equals(Recognizable recognizable){
+       return this.id == recognizable.id;
    }
 }

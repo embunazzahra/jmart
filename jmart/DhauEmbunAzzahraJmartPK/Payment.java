@@ -6,7 +6,8 @@ public class Payment extends Transaction implements FileParser{
     public ShipmentDuration shipmentDuration;
     
     public Payment(int id, int buyerId, Product product, ShipmentDuration shipmentDuration){
-        super(id, buyerId, product.id);
+        super(id, buyerId, product.storeId);
+        this.productId = product.id;
         this.shipmentDuration = shipmentDuration;
     }
     
@@ -33,6 +34,6 @@ public class Payment extends Transaction implements FileParser{
 
     @Override
     public Object write() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

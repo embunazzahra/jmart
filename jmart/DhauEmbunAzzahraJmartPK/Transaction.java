@@ -2,10 +2,10 @@ package DhauEmbunAzzahraJmartPK;
 
 
 public abstract class Transaction extends Recognizable{
-    public String time = "TIME";
+    public String time = "Time";
     public int buyerId;
     public int storeId;
-    public Rating rating;
+    public Rating rating = Rating.NONE;
     
     public enum Rating{
         NONE, BAD, NEUTRAL, GOOD;
@@ -15,20 +15,15 @@ public abstract class Transaction extends Recognizable{
         super(id);
         this.buyerId = buyerId;
         this.storeId = storeId;
-        this.rating = Rating.NONE;
     }
     
     protected Transaction(int id, Account buyer, Store store){
         super(id);
-        this.rating = Rating.NONE;
+        this.buyerId = buyer.id;
+        this.storeId = store.id;
     }
     
-    public boolean validate(){
-        return true;
-    }
-    
-    public Transaction perform(){
-        return null;
-    }
+    public abstract boolean validate();
+    public abstract Transaction perform();
 
 }

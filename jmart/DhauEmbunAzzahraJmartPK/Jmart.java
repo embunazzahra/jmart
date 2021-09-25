@@ -4,7 +4,7 @@ package DhauEmbunAzzahraJmartPK;
 public class Jmart
 {
     public static Product createProduct(){
-        return new Product("Embun", 8, true, new PriceTag(70.0), ProductCategory.BOOK);
+        return null;
     }
     
     public static Coupon createCoupon(){
