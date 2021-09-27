@@ -1,21 +1,13 @@
 package DhauEmbunAzzahraJmartPK;
 
 
-public class Payment extends Transaction implements FileParser{
-    public int productId;
-    public ShipmentDuration shipmentDuration;
-    
-    public Payment(int id, int buyerId, Product product, ShipmentDuration shipmentDuration){
-        super(id, buyerId, product.storeId);
-        this.productId = product.id;
-        this.shipmentDuration = shipmentDuration;
-    }
-    
-    public Payment(int id, int buyerId, int storeId, 
-                    int productId, ShipmentDuration shipmentDuration){
-        super(id, buyerId, storeId);
-        this.productId = productId;
-        this.shipmentDuration = shipmentDuration;
+public class Payment extends Invoice implements Transactor{
+    public int productCount;
+    public Shipment shipment;
+    public Payment(int id, int buyerId, int productId, int productCount, Shipment shipment){
+        super(id,buyerId,productId);
+        this.productCount = productCount;
+        this.shipment = shipment;
     }
     
     @Override
@@ -23,17 +15,11 @@ public class Payment extends Transaction implements FileParser{
         return true;
     }  
     @Override
-    public Transaction perform(){
+    public Invoice perform(){
         return null;
     }
-    
     @Override
-    public boolean read(String content){
-        return true;
-    }
-
-    @Override
-    public Object write() {
-        return null;
+    public double getTotalPay(){
+        return 0.0;
     }
 }

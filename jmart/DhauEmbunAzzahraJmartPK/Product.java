@@ -2,6 +2,7 @@ package DhauEmbunAzzahraJmartPK;
 
 
 
+
 public class Product extends Recognizable implements FileParser{
     public int storeId;
     public String name;
@@ -10,8 +11,9 @@ public class Product extends Recognizable implements FileParser{
     public PriceTag priceTag;
     public ProductCategory category;
     public ProductRating rating;
+    //public MultiDuration multiDuration;
     
-    public Product(int id, int storeId, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category){
+    public Product(int id, int storeId, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category /*MultiDuration multiDuration*/){
         super(id);
         this.name = name;
         this.weight = weight;
@@ -20,6 +22,7 @@ public class Product extends Recognizable implements FileParser{
         this.category = category;
         this.rating = new ProductRating();
         this.storeId = storeId;
+        //this.multiDuration = multiDuration;
     }
     public Product(int id, Store store, String name, int weight, boolean conditionUsed,
                     PriceTag priceTag, ProductCategory category){
@@ -40,5 +43,10 @@ public class Product extends Recognizable implements FileParser{
     @Override
     public Object write() {
         return null;
+    }
+    
+    @Override
+    public String toString(){
+        return "name: "+this.name+"\nweight: "+this.weight+"\nconditionUsed: "+this.conditionUsed+"\npriceTag: "+this.priceTag+"\ncategory: "+this.category+"\nrating: 0"+"\nstoreId: "+this.storeId;
     }
 }
