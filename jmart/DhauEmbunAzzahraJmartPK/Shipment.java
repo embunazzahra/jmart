@@ -22,10 +22,10 @@ public class Shipment implements FileParser{
         public static final Duration NEXT_DAY = new Duration(1<<2);
         public static final Duration REGULER = new Duration(1<<3);
         public static final Duration KARGO = new Duration(1<<4);
-        private final int bit;
+        private final byte bit;
     
         private Duration(int bit){
-            this.bit = bit;
+            this.bit = (byte)bit;
         }
     }//end duration
     
