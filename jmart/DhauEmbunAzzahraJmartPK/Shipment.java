@@ -54,8 +54,6 @@ public class Shipment implements FileParser{
             }
          }
     }
-    }//end duration
-    
     public static class MultiDuration{
         public byte bit;
         public MultiDuration(Duration... args){
@@ -74,8 +72,7 @@ public class Shipment implements FileParser{
                 return false;
             }
         }
-    }//end multiduration
-    
+    }
     public Shipment(String address, int shipmentCost, Duration duration, String receipt){
         this.address = address;
         this.shipmentCost=shipmentCost;
@@ -83,3 +80,8 @@ public class Shipment implements FileParser{
         this.receipt=receipt;
     }
 }
+
+    
+    //end multiduration
+    
+    
