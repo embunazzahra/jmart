@@ -1,6 +1,7 @@
 package DhauEmbunAzzahraJmartPK;
-import java.util.*;
+import java.util.Calendar;
 import java.text.*;
+import java.util.Date;
 
 public class Shipment implements FileParser{
     public String address;
@@ -25,11 +26,20 @@ public class Shipment implements FileParser{
         public static final Duration KARGO = new Duration((byte)(1<<4));
         public final byte bit;
         SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("ddd MMMM dd yyyy");
+        Calendar cal = Calendar.getInstance();
         private Duration(byte bit){
             this.bit = bit;
         }
         public String getEstimatedArrival(Date reference){
-             return ESTIMATION_FORMAT.format(reference);
+            if(bit==Duration.INSTANT.bit || bit==Duration.SAME_DAY.bit){
+                return ESTIMATION_FORMAT.format(reference);
+            }
+            else if(bit==Duration.NEXT_DAY.bit){
+                return ESTIMATION_FORMAT.format(reference);
+            }
+            else{
+                return ESTIMATION_FORMAT.format(reference);
+            }
          }
     }//end duration
     
