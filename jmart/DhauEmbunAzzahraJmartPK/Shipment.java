@@ -1,5 +1,6 @@
 package DhauEmbunAzzahraJmartPK;
-
+import java.util.*;
+import java.text.*;
 
 public class Shipment implements FileParser{
     public String address;
@@ -23,10 +24,13 @@ public class Shipment implements FileParser{
         public static final Duration REGULER = new Duration((byte)(1<<3));
         public static final Duration KARGO = new Duration((byte)(1<<4));
         public final byte bit;
-    
+        SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("ddd MMMM dd yyyy");
         private Duration(byte bit){
             this.bit = bit;
         }
+        public String getEstimatedArrival(Date reference){
+             return ESTIMATION_FORMAT.format(reference);
+         }
     }//end duration
     
     public static class MultiDuration{
