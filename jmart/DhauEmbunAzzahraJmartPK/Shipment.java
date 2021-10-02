@@ -26,21 +26,34 @@ public class Shipment implements FileParser{
         public static final Duration KARGO = new Duration((byte)(1<<4));
         public final byte bit;
         SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("ddd MMMM dd yyyy");
-        Calendar cal = Calendar.getInstance();
+
         private Duration(byte bit){
             this.bit = bit;
         }
         public String getEstimatedArrival(Date reference){
+            Calendar cal =  Calendar.getInstance();
+            cal.setTime(reference);
             if(bit==Duration.INSTANT.bit || bit==Duration.SAME_DAY.bit){
-                return ESTIMATION_FORMAT.format(reference);
+                cal.add(Calendar.DATE,0);
+                return ESTIMATION_FORMAT.format(cal);
             }
             else if(bit==Duration.NEXT_DAY.bit){
-                return ESTIMATION_FORMAT.format(reference);
+                cal.add(Calendar.DATE,1);
+                return ESTIMATION_FORMAT.format(cal);
+            }
+            else if(bit==Duration.REGULER.bit){
+                cal.add(Calendar.DATE,2);
+                return ESTIMATION_FORMAT.format(cal);
+            }
+            else if(bit==Duration.KARGO.bit){
+                cal.add(Calendar.DATE,5);
+                return ESTIMATION_FORMAT.format(cal);
             }
             else{
-                return ESTIMATION_FORMAT.format(reference);
+                return " ";
             }
          }
+    }
     }//end duration
     
     public static class MultiDuration{
