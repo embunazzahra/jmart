@@ -1,13 +1,17 @@
 package DhauEmbunAzzahraJmartPK;
 
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Invoice extends Recognizable implements FileParser{
-    public String date = "Selasa";
+    public Date date = new Date();
     public int buyerId;
     public int productId;
     public int complaintId;
     public Rating rating = Rating.NONE;
     public Status status = Status.WAITING_CONFIRMATION;
+    ArrayList<Record> history = new ArrayList<Record>();
     
     public enum Status{
         WAITING_CONFIRMATION,
@@ -35,7 +39,13 @@ public class Invoice extends Recognizable implements FileParser{
     public double getTotalPay(){
         return 0.0;
     }
-    
+
+    public static class Record{
+        public Status status;
+        public Date date;
+        public String message;
+    }
+
     @Override
     public boolean read(String content) {
         return true;

@@ -1,4 +1,6 @@
 package DhauEmbunAzzahraJmartPK;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Complaint extends Recognizable implements FileParser{
@@ -18,5 +20,13 @@ public class Complaint extends Recognizable implements FileParser{
     @Override
     public Object write() {
         return null;
+    }
+
+    @Override
+    public String toString(){
+        SimpleDateFormat date_format = new SimpleDateFormat("dd'/'MM'/'yyyy");
+        Calendar cale = Calendar.getInstance();
+        cale.setTime(date);
+        return "date="+date_format.format(cale)+",desc='"+desc+"'";
     }
 }

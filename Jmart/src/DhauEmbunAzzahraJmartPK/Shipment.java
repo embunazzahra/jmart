@@ -18,6 +18,7 @@ public class Shipment implements FileParser{
     public Object write() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+
     public static class Duration{
         public static final Duration INSTANT = new Duration((byte)(1<<0));
         public static final Duration SAME_DAY = new Duration((byte)(1<<1));
@@ -25,7 +26,7 @@ public class Shipment implements FileParser{
         public static final Duration REGULER = new Duration((byte)(1<<3));
         public static final Duration KARGO = new Duration((byte)(1<<4));
         public final byte bit;
-        SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("ddd MMMM dd yyyy");
+        SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("EEE MMMM dd yyyy");
 
         private Duration(byte bit){
             this.bit = bit;
@@ -35,23 +36,17 @@ public class Shipment implements FileParser{
             cal.setTime(reference);
             if(bit==Duration.INSTANT.bit || bit==Duration.SAME_DAY.bit){
                 cal.add(Calendar.DATE,0);
-                return ESTIMATION_FORMAT.format(cal);
             }
             else if(bit==Duration.NEXT_DAY.bit){
                 cal.add(Calendar.DATE,1);
-                return ESTIMATION_FORMAT.format(cal);
             }
             else if(bit==Duration.REGULER.bit){
                 cal.add(Calendar.DATE,2);
-                return ESTIMATION_FORMAT.format(cal);
             }
             else if(bit==Duration.KARGO.bit){
                 cal.add(Calendar.DATE,5);
-                return ESTIMATION_FORMAT.format(cal);
             }
-            else{
-                return " ";
-            }
+            return ESTIMATION_FORMAT.format(cal);
          }
     }
     public static class MultiDuration{
