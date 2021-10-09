@@ -46,7 +46,7 @@ public class Shipment implements FileParser{
             else if(bit==Duration.KARGO.bit){
                 cal.add(Calendar.DATE,5);
             }
-            return ESTIMATION_FORMAT.format(cal);
+            return ESTIMATION_FORMAT.format(cal.getTime());
          }
     }
     public static class MultiDuration{
