@@ -1,7 +1,8 @@
 package DhauEmbunAzzahraJmartPK;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class Algorithm {
@@ -15,23 +16,25 @@ public class Algorithm {
         return count(it,value);
     }
     public static <T> int count(Iterator<T> iterator, T value){
-        final Predicate<T> prediction = value ::equals;
-        return count(iterator,prediction);
+        final Predicate<T> pred = value ::equals;
+        return count(iterator,pred);
     }
     public static <T> int count(T[] array, Predicate<T> pred){
-        int counter=0;
-        for(T i : array){
-            if (i==pred){
-                counter++;
-            }
-        }
-        return counter;
+        final Iterator<T> it = Arrays.stream(array).iterator();
+        return count(it,pred);
     }
     public static <T> int count(Iterable<T> iterable, Predicate<T> pred){
-        return 1;
+        final Iterator<T> it = iterable.iterator();
+        return count(it, pred);
     }
     public static <T> int count(Iterator<T> iterator, Predicate<T> pred){
-        return 1;
+        int count = 0;
+        while (iterator.hasNext()){
+            if(pred.predicate(iterator.next())){
+                count++;
+            }
+        }
+        return count;
     }
     public static <T> boolean exists(T[] array, T value){
         final Iterator<T> it = Arrays.stream(array).iterator();
@@ -42,43 +45,160 @@ public class Algorithm {
         return exists(it,value);
     }
     public static <T> boolean exists(Iterator<T> iterator, T value){
-        return exists(iterator,value);
+        final Predicate<T> pred = value :: equals;
+        return exists(iterator,pred);
     }
     public static <T> boolean exists(T[] array, Predicate<T> pred){
-        return true;
+        final Iterator<T> it = Arrays.stream(array).iterator();
+        return exists(it,pred);
     }
     public static <T> boolean exists(Iterable<T> iterable, Predicate<T> pred){
-        return true;
+        final Iterator<T> it = iterable.iterator();
+        return exists(it,pred);
     }
     public static <T> boolean exists(Iterator<T> iterator, Predicate<T> pred){
-        return true;
+        while (iterator.hasNext()){
+            T curr = iterator.next();
+            if(pred.predicate(curr)){
+                return true;
+            }
+        }
+        return false;
     }
-    public static <T> boolean find(T[] array, T value){
+    public static <T> T find(T[] array, T value){
         final Iterator<T> it = Arrays.stream(array).iterator();
-        return exists(it,value);
+        return find(it,value);
     }
-    public static <T> boolean find(Iterable<T> iterable, T value){
+    public static <T> T find(Iterable<T> iterable, T value){
         final Iterator<T> it = iterable.iterator();
-        return exists(it,value);
+        return find(it,value);
     }
-    public static <T> boolean find(Iterator<T> iterator, T value){
-        return true;
+    public static <T> T find(Iterator<T> iterator, T value){
+        final Predicate<T> pred = value :: equals;
+        return find(iterator,pred);
     }
-    public static <T> boolean find(T[] array, Predicate<T> pred){
-        return true;
+    public static <T> T find(T[] array, Predicate<T> pred){
+        final Iterator<T> it = Arrays.stream(array).iterator();
+        return find(it, pred);
     }
-    public static <T> boolean find(Iterable<T> iterable, Predicate<T> pred){
-        return true;
+    public static <T> T find(Iterable<T> iterable, Predicate<T> pred){
+        final Iterator<T> it = iterable.iterator();
+        return find(it,pred);
     }
-    public static <T> boolean find(Iterator<T> iterator, Predicate<T> pred){
-        return true;
+    public static <T> T find(Iterator<T> iterator, Predicate<T> pred){
+        while (iterator.hasNext()){
+            T curr = iterator.next();
+            if(pred.predicate(curr)){
+                return curr;
+            }
+        }
+        return null;
     }
-    public static <T> int min(T first, T second){
-       return 0;
+    public static <T extends Comparable<? super T>> T max(T first, T second){
+        if(first.compareTo(second)>0){
+            return first;
+        }
+        else {
+            return second;
+        }
     }
-    public static <T> int max(T first, T second){
-        return 0;
+    public static <T extends Comparable<? super T>> T max(T[] array){
+        final Iterator<T> iterator = Arrays.stream(array).iterator();
+        return max(iterator);
+    }
+    public static <T extends Comparable<? super T>> T max(Iterable<T> iterable){
+        final Iterator<T> iterator = iterable.iterator();
+        return max(iterator);
+    }
+    public static <T extends Comparable<? super T>> T max(Iterator<T> iterator){
+        T maxim = iterator.next();
+        while (iterator.hasNext()){
+            T current = iterator.next();
+            if(maxim.compareTo(current)<0){
+                maxim = current;
+            }
+        }
+        return maxim;
+    }
+    public static <T extends Comparator<? super T>> T max(T first, T second, Comparator<? super T> comparator){
+        if(comparator.compare(first,second)>=0){
+            return first;
+        }
+        else {
+            return second;
+        }
+    }
+    public static <T extends Comparator<? super T>> T max(T[] array, Comparator<? super T> comparator){
+        final Iterator<T> iterator = Arrays.stream(array).iterator();
+        return max(iterator,comparator);
+    }
+    public static <T extends Comparator<? super T>> T max(Iterable<T> iterable, Comparator<? super T> comparator){
+        final Iterator<T> iterator = iterable.iterator();
+        return max(iterator, comparator);
+    }
+    public static <T extends Comparator<? super T>> T max(Iterator<T> iterator, Comparator<? super T> comparator){
+        T maxim = iterator.next();
+        while (iterator.hasNext()){
+            T current = iterator.next();
+            if(comparator.compare(maxim,current)<0){
+                maxim = current;
+            }
+        }
+        return maxim;
     }
 
+    //min
+    public static <T extends Comparable<? super T>> T min(T first, T second){
+        if(first.compareTo(second)<0){
+            return first;
+        }
+        else {
+            return second;
+        }
+    }
+    public static <T extends Comparable<? super T>> T min(T[] array){
+        final Iterator<T> iterator = Arrays.stream(array).iterator();
+        return min(iterator);
+    }
+    public static <T extends Comparable<? super T>> T min(Iterable<T> iterable){
+        final Iterator<T> iterator = iterable.iterator();
+        return min(iterator);
+    }
+    public static <T extends Comparable<? super T>> T min(Iterator<T> iterator){
+        T maxim = iterator.next();
+        while (iterator.hasNext()){
+            T current = iterator.next();
+            if(maxim.compareTo(current)>=0){
+                maxim = current;
+            }
+        }
+        return maxim;
+    }
+    public static <T extends Comparator<? super T>> T min(T first, T second, Comparator<? super T> comparator){
+        if(comparator.compare(first,second)<=0){
+            return first;
+        }
+        else {
+            return second;
+        }
+    }
+    public static <T extends Comparator<? super T>> T min(T[] array, Comparator<? super T> comparator){
+        final Iterator<T> iterator = Arrays.stream(array).iterator();
+        return min(iterator,comparator);
+    }
+    public static <T extends Comparator<? super T>> T min(Iterable<T> iterable, Comparator<? super T> comparator){
+        final Iterator<T> iterator = iterable.iterator();
+        return min(iterator, comparator);
+    }
+    public static <T extends Comparator<? super T>> T min(Iterator<T> iterator, Comparator<? super T> comparator){
+        T maxim = iterator.next();
+        while (iterator.hasNext()){
+            T current = iterator.next();
+            if(comparator.compare(maxim,current)>=0){
+                maxim = current;
+            }
+        }
+        return maxim;
+    }
 
 }
