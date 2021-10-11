@@ -1,9 +1,6 @@
 package DhauEmbunAzzahraJmartPK;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.*;
 
 public class Algorithm {
     private Algorithm(){}
@@ -201,4 +198,10 @@ public class Algorithm {
         return maxim;
     }
 
+    public static <T> List<T> collect(T[] array, T value){
+        List<T> list = Arrays.asList(array);
+        list.add(value);
+        return list;
+    }
+    
 }
