@@ -91,6 +91,8 @@ public class Algorithm {
         }
         return null;
     }
+
+    //max
     public static <T extends Comparable<? super T>> T max(T first, T second){
         if(first.compareTo(second)>0){
             return first;
@@ -162,14 +164,14 @@ public class Algorithm {
         return min(iterator);
     }
     public static <T extends Comparable<? super T>> T min(Iterator<T> iterator){
-        T maxim = iterator.next();
+        T minim = iterator.next();
         while (iterator.hasNext()){
             T current = iterator.next();
-            if(maxim.compareTo(current)>=0){
-                maxim = current;
+            if(minim.compareTo(current)>=0){
+                minim = current;
             }
         }
-        return maxim;
+        return minim;
     }
     public static <T extends Comparator<? super T>> T min(T first, T second, Comparator<? super T> comparator){
         if(comparator.compare(first,second)<=0){
@@ -188,20 +190,46 @@ public class Algorithm {
         return min(iterator, comparator);
     }
     public static <T extends Comparator<? super T>> T min(Iterator<T> iterator, Comparator<? super T> comparator){
-        T maxim = iterator.next();
+        T minim = iterator.next();
         while (iterator.hasNext()){
             T current = iterator.next();
-            if(comparator.compare(maxim,current)>=0){
-                maxim = current;
+            if(comparator.compare(minim,current)>=0){
+                minim = current;
             }
         }
-        return maxim;
+        return minim;
     }
 
+    //collect
     public static <T> List<T> collect(T[] array, T value){
-        List<T> list = Arrays.asList(array);
-        list.add(value);
+        final Iterator<T> iterator = Arrays.stream(array).iterator();
+        return collect(iterator,value);
+    }
+    public static <T> List<T> collect(Iterable<T> iterable, T value){
+        Iterator<T> iterator = iterable.iterator();
+        return collect(iterator,value);
+    }
+    public static <T> List<T> collect(Iterator<T> iterator, T value){
+        final Predicate<T> pred = value::equals;
+        return collect(iterator,pred);
+    }
+    public static <T> List<T> collect(T[] array, Predicate<T> pred){
+        final Iterator<T> iterator = Arrays.stream(array).iterator();
+        return collect(iterator,pred);
+    }
+    public static <T> List<T> collect(Iterable<T> iterable, Predicate<T> pred){
+        final Iterator<T> iterator = iterable.iterator();
+        return collect(iterator,pred);
+    }
+    public static <T> List<T> collect(Iterator<T> iterator, Predicate<T> pred){
+        List<T> list = new ArrayList<T>();
+        while (iterator.hasNext()){
+            T it = iterator.next();
+            if(pred.predicate(it)){
+                list.add(it);
+            }
+        }
         return list;
     }
-    
+
 }
