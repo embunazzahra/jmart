@@ -4,8 +4,8 @@ package DhauEmbunAzzahraJmartPK;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Invoice extends Recognizable implements FileParser{
-    public Date date = new Date();
+public class Invoice extends Recognizable {
+    public final Date date = new Date();
     public int buyerId;
     public int productId;
     public int complaintId;
@@ -30,8 +30,7 @@ public class Invoice extends Recognizable implements FileParser{
         GOOD;
     }
     
-    protected Invoice(int id, int buyerId, int productId){
-        super(id);
+    protected Invoice(int buyerId, int productId){
         this.buyerId = buyerId;
         this.productId = productId;
     }
@@ -46,13 +45,4 @@ public class Invoice extends Recognizable implements FileParser{
         public String message;
     }
 
-    @Override
-    public boolean read(String content) {
-        return true;
-    }
-
-    @Override
-    public Object write() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

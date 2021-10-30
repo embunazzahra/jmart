@@ -1,52 +1,28 @@
 package DhauEmbunAzzahraJmartPK;
 
-
-
-
-public class Product extends Recognizable implements FileParser{
-    public int storeId;
-    public String name;
-    public int weight;
-    public boolean conditionUsed;
-    public PriceTag priceTag;
+public class Product extends Recognizable {
+    public int accountId;
     public ProductCategory category;
-    public ProductRating rating;
-    Shipment.MultiDuration multiDuration;
-    
-    public Product(int id, int storeId, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration){
-        super(id);
+    public boolean conditionUsed;
+    public double discount;
+    public String name;
+    public double price;
+    public byte shipmentPlans;
+    public int weight;
+
+    public Product(int accountId, String name, int weight, boolean conditionUsed, double price, double discount, ProductCategory category, byte shipmentPlans){
+        this.accountId = accountId;
         this.name = name;
         this.weight = weight;
-        this.conditionUsed=conditionUsed;
-        this.priceTag = priceTag;
+        this.conditionUsed = conditionUsed;
+        this.price = price;
+        this.discount = discount;
         this.category = category;
-        this.rating = new ProductRating();
-        this.storeId = storeId;
-        this.multiDuration = multiDuration;
-    }
-    public Product(int id, Store store, String name, int weight, boolean conditionUsed,
-                    PriceTag priceTag, ProductCategory category){
-        super(id);
-        this.name = name;
-        this.weight = weight;
-        this.conditionUsed=conditionUsed;
-        this.priceTag = priceTag;
-        this.category = category;
-        this.rating = new ProductRating();
-        this.storeId = store.id;
-    }
-    @Override
-    public boolean read(String content){
-        return true;
+        this.shipmentPlans = shipmentPlans;
     }
 
-    @Override
-    public Object write() {
-        return null;
-    }
-    
     @Override
     public String toString(){
-        return "name: "+this.name+"\nweight: "+this.weight+"\nconditionUsed: "+this.conditionUsed+"\npriceTag: "+this.priceTag+"\ncategory: "+this.category+"\nrating: 0"+"\nstoreId: "+this.storeId;
+        return "name: "+this.name+"\nweight: "+this.weight+"\nconditionUsed: "+this.conditionUsed+"\ncategory: "+this.category;
     }
 }

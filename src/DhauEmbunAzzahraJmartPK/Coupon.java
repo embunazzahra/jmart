@@ -2,7 +2,7 @@ package DhauEmbunAzzahraJmartPK;
 
 
 
-public class Coupon extends Recognizable implements FileParser
+public class Coupon extends Recognizable
 {
     public final String name;
     public final int code;
@@ -11,19 +11,13 @@ public class Coupon extends Recognizable implements FileParser
     public final double minimum;
     private boolean used;
 
-    @Override
-    public Object write() {
-        return null;
-    }  
-    
     public enum Type{
         DISCOUNT,
-        REBATE;
+        REBATE
     }
     
-    public Coupon(int id, String name, int code, Type type, double cut, double
+    public Coupon(String name, int code, Type type, double cut, double
 minimum){
-        super(id);
         this.name = name;
         this.code = code;
         this.type = type;
@@ -35,9 +29,9 @@ minimum){
     public boolean isUsed(){
         return used;
     }
-    
-    public boolean canApply(PriceTag priceTag){
-        if (priceTag.getAdjustedPrice()>=minimum && used == false){
+
+    public boolean canApply(Treasury treasury){
+        if (treasury.getAdjustedPrice(100000, 50)>=minimum && used == false){
             return true;
         }
         else{
@@ -45,18 +39,13 @@ minimum){
         }
     }
     
-    public double apply(PriceTag priceTag){
+    public double apply(Treasury treasury){
         used = true;
         if (type == Type.DISCOUNT){
-            return priceTag.getAdjustedPrice() * (100.0-cut)/100;
+            return treasury.getAdjustedPrice(100000, 50) * (100.0-cut)/100;
         }
         else{
-            return priceTag.getAdjustedPrice() - cut;
+            return treasury.getAdjustedPrice(100000, 50) - cut;
         }
-    }
-    
-    @Override
-    public boolean read(String content){
-        return true;
     }
 }

@@ -5,10 +5,11 @@ import java.lang.*;
 
 public class Recognizable implements Comparable<Recognizable> {
    public final int id; 
-   protected Recognizable(int id){
-       this.id = id;
+   protected Recognizable(){
+       this.id = 0;
    }
-   
+
+   @Override
    public boolean equals(Object other){
        if (other instanceof Recognizable){
            return equals(other);
