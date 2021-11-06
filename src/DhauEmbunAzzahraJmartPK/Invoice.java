@@ -4,7 +4,7 @@ package DhauEmbunAzzahraJmartPK;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Invoice extends Recognizable {
+public class Invoice extends Serializable {
     public final Date date = new Date();
     public int buyerId;
     public int productId;

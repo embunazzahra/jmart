@@ -1,22 +1,74 @@
 package DhauEmbunAzzahraJmartPK;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.gson.*;
 
 
 public class Jmart
 {
-    class Country{
+    /*class Country{
         public String name;
         public int population;
         public List<String> listOfStates;
+    }*/
+
+    public static List<Product> read(String filepath){
+        Gson gson = new Gson();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filepath));
+            Product[] input = gson.fromJson(br, Product[].class);
+            List<Product> list = Arrays.asList(input);
+            return list;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+    public static List<Product> filterByCategory(List<Product> list, ProductCategory category){
+        List<Product> filtered = list.stream()
+                .filter(product -> product.category.equals(category)).collect(Collectors.toList());
+        return filtered;
+    }
+
+    public static List<Product> filterByPrice(List<Product> list, double minPrice, double maxPrice){
+        if(minPrice==0.0){
+            List<Product> filtered = list.stream()
+                    .filter(product -> product.price<=maxPrice).collect(Collectors.toList());
+            return filtered;
+        }
+        else if(maxPrice==0.0){
+            List<Product> filtered = list.stream()
+                    .filter(product -> product.price>=minPrice).collect(Collectors.toList());
+            return filtered;
+
+        }
+        else {
+            List<Product> filtered = list.stream()
+                    .filter(product -> (product.price<=maxPrice && product.price>=minPrice)).collect(Collectors.toList());
+            return filtered;
+        }
+    }
+
     
     public static void main(String[] args) 
     {
-        String filepath = "C://Proyek Jmart/Jmart/src/lib/city.json";
+        /*try {
+            List<Product> list = read("C://Proyek Jmart/Jmart/src/lib/randomProductList.json");
+            List<Product> filtered = filterByCategory(list,ProductCategory.COSMETICS);
+            filtered.forEach(product -> System.out.println(product.name));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        /*String filepath = "C://Proyek Jmart/Jmart/src/lib/city.json";
         Gson gson = new Gson();
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
@@ -28,7 +80,19 @@ public class Jmart
         }
         catch (IOException e){
             e.printStackTrace();
-        }
+        }*/
+        /*System.out.println("acc id: " + new Account(null,null,null,-1).id);
+        System.out.println("acc id: " + new Account(null,null,null,-1).id);
+        System.out.println("acc id: " + new Account(null,null,null,-1).id);
+
+        System.out.println("acc id: " + new Payment(-1,-1,-1,null).id);
+        System.out.println("acc id: " + new Payment(-1,-1,-1,null).id);
+        System.out.println("acc id: " + new Payment(-1,-1,-1,null).id);
+        Payment payment = new Payment(-1,-1,-1,null);
+        System.out.println("ganti id yg payment yg oertama");
+        System.out.println("awal: "+Serializable.setClosingId();*/
+
+
                 
     }
 }

@@ -1,9 +1,8 @@
 package DhauEmbunAzzahraJmartPK;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-public class Complaint extends Recognizable {
+public class Complaint extends Serializable {
     public Date date = new Date();
     public String desc;
     
