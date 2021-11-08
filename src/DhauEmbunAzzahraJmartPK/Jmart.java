@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.google.gson.*;
@@ -18,6 +20,32 @@ public class Jmart
         public int population;
         public List<String> listOfStates;
     }*/
+
+    private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred){
+        //final Iterator<Product> it = list.iterator();
+        return list.stream()
+                //.filter(product -> pred.predicate(product))
+                .distinct()
+                .skip(page*pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Product> filterByAccountId(List<Product> list, int accountId, int page, int pageSize){
+        List<Product> filtered = list.stream()
+                .filter(product -> product.accountId == accountId)
+                .collect(Collectors.toList());
+        final Predicate<Product> pred = list::equals;
+        return paginate(filtered, page, pageSize, pred);
+    }
+
+    public static List<Product> filterByName(List<Product> list, String search, int page, int pageSize){
+        List<Product> filtered = list.stream()
+                .filter(product -> product.name.toLowerCase().contains(search.toLowerCase()))
+                .collect(Collectors.toList());
+        final Predicate<Product> pred = list::equals;
+        return paginate(filtered, page, pageSize, pred);
+    }
 
     public static List<Product> read(String filepath){
         Gson gson = new Gson();
@@ -60,6 +88,21 @@ public class Jmart
     
     public static void main(String[] args) 
     {
+       /* try {
+            List<Product> list = read("C://Proyek Jmart/Jmart/src/lib/randomProductList.json");
+            List<Product> filtered = filterByName(list,"ha", 0,2);
+            filtered.forEach(product -> System.out.println(product.name));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<Product> list = read("C://Proyek Jmart/Jmart/src/lib/randomProductList.json");
+            List<Product> filtered = filterByAccountId(list,1, 0,5);
+            filtered.forEach(product -> System.out.println(product.name));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         /*try {
             List<Product> list = read("C://Proyek Jmart/Jmart/src/lib/randomProductList.json");
             List<Product> filtered = filterByCategory(list,ProductCategory.COSMETICS);
@@ -82,15 +125,15 @@ public class Jmart
             e.printStackTrace();
         }*/
         /*System.out.println("acc id: " + new Account(null,null,null,-1).id);
-        System.out.println("acc id: " + new Account(null,null,null,-1).id);
+
         System.out.println("acc id: " + new Account(null,null,null,-1).id);
 
         System.out.println("acc id: " + new Payment(-1,-1,-1,null).id);
         System.out.println("acc id: " + new Payment(-1,-1,-1,null).id);
+        System.out.println("acc id: " + new Account(null,null,null,-1).id);
         System.out.println("acc id: " + new Payment(-1,-1,-1,null).id);
         Payment payment = new Payment(-1,-1,-1,null);
-        System.out.println("ganti id yg payment yg oertama");
-        System.out.println("awal: "+Serializable.setClosingId();*/
+        */
 
 
                 
