@@ -43,7 +43,7 @@ public class Jmart
         List<Product> filtered = list.stream()
                 .filter(product -> product.name.toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
-        final Predicate<Product> pred = list::equals;
+        final Predicate<Product> pred = filtered::equals;
         return paginate(filtered, page, pageSize, pred);
     }
 
@@ -94,9 +94,9 @@ public class Jmart
             filtered.forEach(product -> System.out.println(product.name));
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
-        try {
+        /*try {
             List<Product> list = read("C://Proyek Jmart/Jmart/src/lib/randomProductList.json");
             List<Product> filtered = filterByAccountId(list,1, 0,5);
             filtered.forEach(product -> System.out.println(product.name));
