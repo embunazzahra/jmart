@@ -8,14 +8,14 @@ public class Invoice extends Serializable {
     public final Date date = new Date();
     public int buyerId;
     public int productId;
-    public int complaintId;
+    public int complaintId = -1;
     public Rating rating = Rating.NONE;
-    public Status status = Status.WAITING_CONFIRMATION;
-    ArrayList<Record> history = new ArrayList<Record>();
+    public Status status;
     
     public enum Status{
         WAITING_CONFIRMATION,
         CANCELLED,
+        DELIVERED,
         ON_PROGRESS,
         ON_DELIVERY,
         COMPLAINT,
@@ -35,14 +35,8 @@ public class Invoice extends Serializable {
         this.productId = productId;
     }
 
-    public double getTotalPay(){
+    public double getTotalPay(Product product){
         return 0.0;
-    }
-
-    public static class Record{
-        public Status status;
-        public Date date;
-        public String message;
     }
 
 }

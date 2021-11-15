@@ -15,18 +15,16 @@ public class JsonTable<T> extends Vector<T> {
 
     JsonTable(Class<T> clazz, String filepath) throws IOException{
         this.filepath = filepath;
+        File file = new File(filepath);
+        @SuppressWarnings("unchecked")
+        Class<T[]> arrayType = (Class<T[]>) Array.newInstance(clazz,0).getClass();
         try {
-            @SuppressWarnings("unchecked")
-            Class<T[]> arrayType = (Class<T[]>) Array.newInstance(clazz,0).getClass();
             T[] loaded = JsonTable.readJson(arrayType,filepath);
             Collections.addAll(this,loaded);
         } catch (FileNotFoundException e) {
-            try {
-                Class<T[]> arrayType = (Class<T[]>) Array.newInstance(clazz,0).getClass();
-                T[] loaded = JsonTable.readJson(arrayType,filepath);
-                JsonTable.writeJson(arrayType,filepath);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+            if(!file.exists()){
+                file.getParentFile().mkdirs();
+                file.createNewFile();
             }
         }
     }
