@@ -36,7 +36,7 @@ public class Invoice extends Serializable {
     }
 
     public double getTotalPay(Product product){
-        return 0.0;
+        return product.price;
     }
 
 }

@@ -12,12 +12,44 @@ import com.google.gson.*;
 
 public class Jmart
 {
-    /*class Country{
-        public String name;
-        public int population;
-        public List<String> listOfStates;
-    }*/
+    public static long DELIVERED_LIMIT_MS = 3;
+    public static long ON_DELIVERY_LIMIT_MS = 3;
+    public static long ON_PROGRESS_LIMIT_MS = 3;
+    public static long WAITING_CONF_LIMIT_MS = 10;
 
+    public static boolean paymentTimekeeper(Payment payment){
+        Payment.Record record = payment.history.get(payment.history.size()-1);
+        long start = record.date.getTime();
+        long end = System.nanoTime();
+        long elapsed = end - start;
+
+        if (record.status == Invoice.Status.WAITING_CONFIRMATION && elapsed > WAITING_CONF_LIMIT_MS){
+            record.status = Invoice.Status.FAILED;
+            record.message = "failed";
+            payment.history.add(record);
+            return true;
+        }
+        else if(record.status == Invoice.Status.ON_PROGRESS && elapsed > ON_PROGRESS_LIMIT_MS){
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.FAILED,"failed");
+            payment.history.add(newRecord);
+            return true;
+        }
+        else if(record.status == Invoice.Status.ON_DELIVERY && elapsed > ON_DELIVERY_LIMIT_MS){
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.DELIVERED,"delivered");
+            payment.history.add(newRecord);
+            return false;
+        }
+        else if(record.status == Invoice.Status.DELIVERED && elapsed > DELIVERED_LIMIT_MS){
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.FINISHED,"finished");
+            payment.history.add(newRecord);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+    /*
     private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred){
         int iteration = 0;
         int occurences = 0;
@@ -78,11 +110,30 @@ public class Jmart
                     .filter(product -> (product.price<=maxPrice && product.price>=minPrice)).collect(Collectors.toList());
             return filtered;
         }
-    }
+    }*/
 
     
     public static void main(String[] args) 
     {
+        try {
+            JsonTable<Payment> table = new JsonTable<>(Payment.class, "C://Proyek Jmart/Jmart/src/lib/randomPaymentList.json");
+            ObjectPoolThread<Payment> paymentPool = new ObjectPoolThread<Payment>("Thread-PP", Jmart::paymentTimekeeper);
+
+            paymentPool.start();
+
+            table.forEach(payment -> paymentPool.add(payment));
+            while (paymentPool.size()!=0);
+            paymentPool.exit();
+            while (paymentPool.isAlive());
+            System.out.println("thread exit success");
+            Gson gson = new Gson();
+            table.forEach(payment -> {String history = gson.toJson(payment.history);
+                System.out.println(history);});
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+
         /*try {
             String filepath = "a/b/c/account.json";
 
