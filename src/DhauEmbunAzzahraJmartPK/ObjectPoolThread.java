@@ -32,7 +32,6 @@ public class ObjectPoolThread<T> extends Thread{
 
     @Override
     public void run() {
-        notify();
         try {
             while (!exitSignal){
                 for (int i = 0 ; i < objectPool.size() ; i++){

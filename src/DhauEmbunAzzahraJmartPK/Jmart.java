@@ -24,9 +24,8 @@ public class Jmart
         long elapsed = end - start;
 
         if (record.status == Invoice.Status.WAITING_CONFIRMATION && elapsed > WAITING_CONF_LIMIT_MS){
-            record.status = Invoice.Status.FAILED;
-            record.message = "failed";
-            payment.history.add(record);
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.FAILED,"failed");
+            payment.history.add(newRecord);
             return true;
         }
         else if(record.status == Invoice.Status.ON_PROGRESS && elapsed > ON_PROGRESS_LIMIT_MS){
