@@ -1,4 +1,6 @@
 package com.DhauEmbunAzzahraJmartPK;
+import com.DhauEmbunAzzahraJmartPK.dbjson.Serializable;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

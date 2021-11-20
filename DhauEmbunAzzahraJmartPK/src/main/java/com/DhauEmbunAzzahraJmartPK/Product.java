@@ -1,5 +1,7 @@
 package com.DhauEmbunAzzahraJmartPK;
 
+import com.DhauEmbunAzzahraJmartPK.dbjson.Serializable;
+
 public class Product extends Serializable {
     public int accountId;
     public ProductCategory category;

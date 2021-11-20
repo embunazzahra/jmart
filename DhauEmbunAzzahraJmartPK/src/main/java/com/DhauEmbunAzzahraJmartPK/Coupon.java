@@ -1,6 +1,7 @@
 package com.DhauEmbunAzzahraJmartPK;
 
 
+import com.DhauEmbunAzzahraJmartPK.dbjson.Serializable;
 
 public class Coupon extends Serializable
 {

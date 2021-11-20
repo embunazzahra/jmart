@@ -1,6 +1,8 @@
 package com.DhauEmbunAzzahraJmartPK;
 
 
+import com.DhauEmbunAzzahraJmartPK.dbjson.Serializable;
+
 import java.util.regex.Pattern;
 
 public class Account extends Serializable {

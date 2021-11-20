@@ -1,7 +1,8 @@
 package com.DhauEmbunAzzahraJmartPK;
 
 
-import java.util.ArrayList;
+import com.DhauEmbunAzzahraJmartPK.dbjson.Serializable;
+
 import java.util.Date;
 
 public class Invoice extends Serializable {
