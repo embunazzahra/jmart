@@ -13,7 +13,7 @@ public class Algorithm {
         return count(it,value);
     }
     public static <T> int count(Iterator<T> iterator, T value){
-        final Predicate<T> pred = value ::equals;
+        final Predicate<T> pred = value::equals;
         return count(iterator,pred);
     }
     public static <T> int count(T[] array, Predicate<T> pred){

@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.DhauEmbunAzzahraJmartPK.dbjson.JsonDBEngine;
 import com.google.gson.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Jmart
 {
-    public static long DELIVERED_LIMIT_MS = 3;
+    /*public static long DELIVERED_LIMIT_MS = 3;
     public static long ON_DELIVERY_LIMIT_MS = 3;
     public static long ON_PROGRESS_LIMIT_MS = 3;
     public static long WAITING_CONF_LIMIT_MS = 10;
@@ -49,7 +50,7 @@ public class Jmart
             return false;
         }
 
-    }
+    }*/
     /*
     private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred){
         int iteration = 0;
@@ -116,7 +117,9 @@ public class Jmart
 
     public static void main(String[] args) 
     {
+        JsonDBEngine.Run(Jmart.class);
         SpringApplication.run(Jmart.class, args);
+        Runtime.getRuntime().addShutdownHook(new Thread(()->JsonDBEngine.join()));
         /*try {
             JsonTable<Payment> table = new JsonTable<>(Payment.class, "C://Proyek Jmart/Jmart/src/lib/randomPaymentList.json");
             ObjectPoolThread<Payment> paymentPool = new ObjectPoolThread<Payment>("Thread-PP", Jmart::paymentTimekeeper);

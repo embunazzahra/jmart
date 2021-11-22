@@ -1,5 +1,6 @@
 package com.DhauEmbunAzzahraJmartPK;
 
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.function.Function;
 
@@ -19,7 +20,7 @@ public class ObjectPoolThread<T> extends Thread{
 
     public synchronized void add(T object){
         objectPool.add(object);
-        notify();
+        this.notify();
     }
 
     public int size(){
@@ -32,22 +33,28 @@ public class ObjectPoolThread<T> extends Thread{
 
     @Override
     public void run() {
-        try {
-            while (!exitSignal){
-                while (objectPool.isEmpty()){
-                    this.wait();
-                }
+            try {
+                while (!exitSignal){
+                    synchronized (this){
+                        while (objectPool.isEmpty()){
+                            this.wait();
+                        }
+                    }
 
-
-                for (int i = 0 ; i < objectPool.size() && objectPool.size()>0; i++){
-                    if(routine.apply(objectPool.get(i))){
-                        objectPool.remove(i);
-                        i--;
+                    /*for (int i = 0 ; i < objectPool.size() && objectPool.size()>0; i++){
+                        if(routine.apply(objectPool.get(i))){
+                            objectPool.remove(i);
+                            i--;
+                        }
+                    }*/
+                    for(Iterator<T> iterator = objectPool.iterator(); iterator.hasNext();){
+                        if(routine.apply(iterator.next())){
+                            iterator.remove();
+                        }
                     }
                 }
-            }
-        } catch (InterruptedException e) {
+            } catch (InterruptedException e) {
 
-        }
+            }
     }
 }

@@ -16,8 +16,8 @@ public class AccountController implements BasicGetController<Account>
 {
     public static final String REGEX_EMAIL = "^\\w+([\\.&`~-]?\\w+)*@\\w+([\\.-]?\\w+)+$";
     public static final String REGEX_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d][^-\\s]{8,}$";
-    public static final Pattern REGEX_PATTERN_EMAIL = null;
-    public static final Pattern REGEX_PATTERN_PASSWORD = null;
+    public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
+    public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
 
     public JsonTable<Account> getJsonTable(){
         return accountTable;
@@ -26,7 +26,7 @@ public class AccountController implements BasicGetController<Account>
     @PostMapping(value = "/login")
     public Account login(@RequestParam String email, @RequestParam String password){
         Account acc = Algorithm.<Account>find(accountTable, (e)->e.email.equals(email));
-        if (acc!=null){
+        if (acc!=null && REGEX_PATTERN_PASSWORD.matcher(password).matches()){
             return acc;
         }else {
             return null;
@@ -37,7 +37,10 @@ public class AccountController implements BasicGetController<Account>
     public Account register(@RequestParam String name,
                             @RequestParam String email,
                             @RequestParam String password){
-        if(name.isBlank() || !Pattern.matches(REGEX_EMAIL, email) || !Pattern.matches(REGEX_PASSWORD, password)){
+        if(name.isBlank() ||
+                !REGEX_PATTERN_EMAIL.matcher(email).matches() ||
+                !REGEX_PATTERN_PASSWORD.matcher(password).matches() ||
+                Algorithm.<Account>exists(accountTable, e->e.email.equals(email))){
             return null;
         }
         else{
@@ -55,9 +58,8 @@ public class AccountController implements BasicGetController<Account>
         Account acc = Algorithm.<Account>find(accountTable, o->o.id==id);
         if(acc==null||acc.store!=null)
             return null;
-
         acc.store = new Store(name,address,phoneNumber,0);
-        return acc.store;
+            return acc.store;
     }
 
     @PostMapping(value = "/{id}/topUp")
