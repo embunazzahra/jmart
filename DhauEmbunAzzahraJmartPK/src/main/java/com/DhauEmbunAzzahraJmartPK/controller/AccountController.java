@@ -7,6 +7,8 @@ import com.DhauEmbunAzzahraJmartPK.dbjson.JsonAutowired;
 import com.DhauEmbunAzzahraJmartPK.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.regex.Pattern;
 
@@ -26,7 +28,30 @@ public class AccountController implements BasicGetController<Account>
     @PostMapping(value = "/login")
     public Account login(@RequestParam String email, @RequestParam String password){
         Account acc = Algorithm.<Account>find(accountTable, (e)->e.email.equals(email));
-        if (acc!=null && REGEX_PATTERN_PASSWORD.matcher(password).matches()){
+        String generatedPassword = null;
+        try
+        {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Add password bytes to digest
+            md.update(password.getBytes());
+
+            // Get the hash's bytes
+            byte[] bytes = md.digest();
+
+            // This bytes[] has bytes in decimal format. Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            // Get complete hashed password in hex format
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        if (acc!=null && acc.password.equals(generatedPassword)){
             return acc;
         }else {
             return null;
@@ -44,7 +69,30 @@ public class AccountController implements BasicGetController<Account>
             return null;
         }
         else{
-            Account newAcc = new Account(name,email,password,0);
+            String generatedPassword = null;
+            try
+            {
+                // Create MessageDigest instance for MD5
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                // Add password bytes to digest
+                md.update(password.getBytes());
+
+                // Get the hash's bytes
+                byte[] bytes = md.digest();
+
+                // This bytes[] has bytes in decimal format. Convert it to hexadecimal format
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bytes.length; i++) {
+                    sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+
+                // Get complete hashed password in hex format
+                generatedPassword = sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            Account newAcc = new Account(name,email,generatedPassword,0);
             accountTable.add(newAcc);
             return newAcc;
         }

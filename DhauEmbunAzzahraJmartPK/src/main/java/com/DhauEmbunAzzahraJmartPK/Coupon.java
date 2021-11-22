@@ -31,8 +31,8 @@ minimum){
         return used;
     }
 
-    public boolean canApply(Treasury treasury){
-        if (treasury.getAdjustedPrice(100000, 50)>=minimum && used == false){
+    public boolean canApply(/*Treasury treasury*/double price, double discount){
+        if (/*treasury.getAdjustedPrice(100000, 50)>=minimum && */used == false){
             return true;
         }
         else{
