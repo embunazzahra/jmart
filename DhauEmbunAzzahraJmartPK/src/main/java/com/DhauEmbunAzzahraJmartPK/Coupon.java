@@ -31,8 +31,8 @@ minimum){
         return used;
     }
 
-    public boolean canApply(/*Treasury treasury*/double price, double discount){
-        if (/*treasury.getAdjustedPrice(100000, 50)>=minimum && */used == false){
+    public boolean canApply(double price, double discount){
+        if (Treasury.getAdjustedPrice(price, discount)>=minimum && used == false){
             return true;
         }
         else{
@@ -40,13 +40,13 @@ minimum){
         }
     }
     
-    public double apply(Treasury treasury){
+    public double apply(double price, double discount){
         used = true;
         if (type == Type.DISCOUNT){
-            return treasury.getAdjustedPrice(100000, 50) * (100.0-cut)/100;
+            return Treasury.getAdjustedPrice(price, discount) * (100.0-cut)/100;
         }
         else{
-            return treasury.getAdjustedPrice(100000, 50) - cut;
+            return Treasury.getAdjustedPrice(price, discount) - cut;
         }
     }
 }

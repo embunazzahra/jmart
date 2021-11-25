@@ -1,14 +1,9 @@
 package com.DhauEmbunAzzahraJmartPK.controller;
 
-import com.DhauEmbunAzzahraJmartPK.Invoice;
-import com.DhauEmbunAzzahraJmartPK.ObjectPoolThread;
-import com.DhauEmbunAzzahraJmartPK.Payment;
-import com.DhauEmbunAzzahraJmartPK.Shipment;
+import com.DhauEmbunAzzahraJmartPK.*;
 import com.DhauEmbunAzzahraJmartPK.dbjson.JsonAutowired;
 import com.DhauEmbunAzzahraJmartPK.dbjson.JsonTable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -56,27 +51,82 @@ public class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping(value = "/create")
-    public Payment create(int buyerId,
-                          int productId,
-                          int productCount,
-                          String shipmentAddress,
-                          byte shipmentPlan){
-        return new Payment(buyerId,productId,productCount,new Shipment(shipmentAddress,2000, shipmentPlan, "receipt"));
+    public Payment create(@RequestParam int buyerId,
+                          @RequestParam int productId,
+                          @RequestParam int productCount,
+                          @RequestParam String shipmentAddress,
+                          @RequestParam byte shipmentPlan){
+        Account account = Algorithm.<Account>find(AccountController.accountTable, e->e.id==buyerId);
+        Product product = Algorithm.<Product>find(ProductController.productTable, e->e.id==productId);
+        if(account!=null && product!=null){
+            Payment payment = new Payment(buyerId,
+                    productId,
+                    productCount,
+                    new Shipment(shipmentAddress,0,shipmentPlan, null));
+            double total = payment.getTotalPay(product);
+            if(account.balance>=total){
+                account.balance-=total;
+                Payment.Record record = new Payment.Record(Invoice.Status.WAITING_CONFIRMATION,
+                        "waiting confirmation");
+                payment.history.add(record);
+                paymentTable.add(payment);
+                poolThread.add(payment);
+                return payment;
+
+            }else {
+                return null;
+            }
+        }else {
+            return null;
+        }
     }
 
     @PostMapping(value = "/{id}/accept")
-    public boolean accept(int id){
-        return true;
+    public boolean accept(@PathVariable int id){
+        Payment payment = Algorithm.<Payment>find(getJsonTable(),e->e.id==id);
+        if(payment!=null &&
+                payment.history
+                .get(payment.history.size()-1)
+                .status
+                .equals(Invoice.Status.WAITING_CONFIRMATION)){
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.ON_PROGRESS,"on progress");
+            payment.history.add(newRecord);
+            return true;
+        }
+        return false;
     }
 
     @PostMapping(value = "/{id}/cancel")
-    public boolean cancel(int id){
-        return true;
+    public boolean cancel(@PathVariable int id){
+
+        Payment payment = Algorithm.<Payment>find(getJsonTable(),e->e.id==id);
+        if(payment!=null &&
+                payment.history
+                        .get(payment.history.size()-1)
+                        .status
+                        .equals(Invoice.Status.WAITING_CONFIRMATION)){
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.CANCELLED,"cancelled");
+            payment.history.add(newRecord);
+            return true;
+        }
+        return false;
     }
 
     @PostMapping(value = "/{id}/submit")
-    public boolean submit(int id, String receipt){
-        return true;
+    public boolean submit(@PathVariable int id, @RequestParam String receipt){
+        Payment payment = Algorithm.<Payment>find(getJsonTable(),e->e.id==id);
+        if(payment!=null &&
+                payment.history
+                        .get(payment.history.size()-1)
+                        .status
+                        .equals(Invoice.Status.ON_PROGRESS) &&
+                !payment.shipment.receipt.isBlank()){
+            payment.shipment.receipt = receipt;
+            Payment.Record newRecord = new Payment.Record(Invoice.Status.ON_DELIVERY,"on delivery");
+            payment.history.add(newRecord);
+            return true;
+        }
+        return false;
     }
 
 

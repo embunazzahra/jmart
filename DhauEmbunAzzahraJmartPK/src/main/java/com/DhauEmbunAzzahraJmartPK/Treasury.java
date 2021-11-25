@@ -17,7 +17,7 @@ public class Treasury {
             return BOTTOM_FEE;
         }
         else{
-            return (100.0-COMMISSION_MULTIPLIER)*discountedPrice;
+            return (COMMISSION_MULTIPLIER)*discountedPrice;
         }
         
     }

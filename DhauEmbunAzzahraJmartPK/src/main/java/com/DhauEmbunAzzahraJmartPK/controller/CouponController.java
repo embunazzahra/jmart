@@ -43,9 +43,9 @@ public class CouponController implements BasicGetController<Coupon> {
     }
 
     @GetMapping(value = "/getAvailable")
-    public List<Coupon> getAvailable(@RequestParam int page,
-                                     @RequestParam int pageSize){
-        return Algorithm.<Coupon>paginate(getJsonTable(),page,pageSize,e->e.isUsed()==false);
+    public List<Coupon> getAvailable(@RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "2") int pageSize){
+        return Algorithm.<Coupon>paginate(getJsonTable(),page,pageSize,e-> !e.isUsed());
     }
 
     @JsonAutowired(value = Coupon.class, filepath = "C://Proyek Jmart/Jmart/lib/coupon.json")
