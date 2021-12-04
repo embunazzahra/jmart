@@ -106,7 +106,7 @@ public class AccountController implements BasicGetController<Account>
         Account acc = Algorithm.<Account>find(accountTable, o->o.id==id);
         if(acc==null||acc.store!=null)
             return null;
-        acc.store = new Store(name,address,phoneNumber,0);
+        acc.store = new Store(name,address,phoneNumber);
             return acc.store;
     }
 
