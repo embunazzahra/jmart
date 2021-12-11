@@ -6,6 +6,7 @@ import com.DhauEmbunAzzahraJmartPK.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/payment")
@@ -129,6 +130,14 @@ public class PaymentController implements BasicGetController<Payment> {
             return true;
         }
         return false;
+    }
+
+    @GetMapping(value = "/byAccount")
+    public ArrayList<Payment> getByAccount(@RequestParam int buyerId){
+        ArrayList<Payment> paymentArrayListList = new ArrayList<>();
+        List<Payment> list = Algorithm.<Payment>collect(getJsonTable(),e->e.buyerId==buyerId);
+        paymentArrayListList.addAll(list);
+        return paymentArrayListList;
     }
 
     @JsonAutowired(value = Payment.class, filepath = "C://Proyek Jmart/Jmart/lib/payment.json")
