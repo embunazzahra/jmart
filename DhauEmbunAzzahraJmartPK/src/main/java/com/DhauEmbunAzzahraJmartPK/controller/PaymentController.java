@@ -5,13 +5,15 @@ import com.DhauEmbunAzzahraJmartPK.dbjson.JsonAutowired;
 import com.DhauEmbunAzzahraJmartPK.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/payment")
 public class PaymentController implements BasicGetController<Payment> {
-    public static long DELIVERED_LIMIT_MS = 3000;
-    public static long ON_DELIVERY_LIMIT_MS = 3000;
-    public static long ON_PROGRESS_LIMIT_MS = 3000;
-    public static long WAITING_CONF_LIMIT_MS = 1000;
+    public static long DELIVERED_LIMIT_MS = 60000;
+    public static long ON_DELIVERY_LIMIT_MS = 60000;
+    public static long ON_PROGRESS_LIMIT_MS = 60000;
+    public static long WAITING_CONF_LIMIT_MS = 60000;
     public static ObjectPoolThread<Payment> poolThread;
 
     static {
@@ -22,7 +24,7 @@ public class PaymentController implements BasicGetController<Payment> {
     public static boolean timekeeper(Payment payment){
         Payment.Record record = payment.history.get(payment.history.size()-1);
         long start = record.date.getTime();
-        long end = System.nanoTime();
+        long end = System.currentTimeMillis();
         long elapsed = end - start;
 
         if (record.status == Invoice.Status.WAITING_CONFIRMATION && elapsed > WAITING_CONF_LIMIT_MS){
@@ -62,7 +64,7 @@ public class PaymentController implements BasicGetController<Payment> {
             Payment payment = new Payment(buyerId,
                     productId,
                     productCount,
-                    new Shipment(shipmentAddress,0,shipmentPlan, null));
+                    new Shipment(shipmentAddress,10000,shipmentPlan, null));
             double total = payment.getTotalPay(product);
             if(account.balance>=total){
                 account.balance-=total;
@@ -128,8 +130,6 @@ public class PaymentController implements BasicGetController<Payment> {
         }
         return false;
     }
-
-
 
     @JsonAutowired(value = Payment.class, filepath = "C://Proyek Jmart/Jmart/lib/payment.json")
     public static JsonTable<Payment> paymentTable;

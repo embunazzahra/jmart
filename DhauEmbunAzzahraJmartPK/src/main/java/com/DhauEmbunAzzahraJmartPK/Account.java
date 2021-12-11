@@ -10,7 +10,7 @@ public class Account extends Serializable {
     public String email;
     public String password;
     public double balance;
-    public Store store;
+    public Store store = null;
     public static final String REGEX_EMAIL = "^\\w+([\\.&`~-]?\\w+)*@\\w+([\\.-]?\\w+)+$";
     public static final String REGEX_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d][^-\\s]{8,}$";
     

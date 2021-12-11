@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 public interface BasicGetController<T extends Serializable> {
     @GetMapping(path = "/page")
-    default List<T> getPage(@RequestParam(value = "page", defaultValue = "1") int page,
+    default List<T> getPage(@RequestParam(value = "page", defaultValue = "0") int page,
                             @RequestParam(value = "pageSize", defaultValue = "2") int pageSize){
         return Algorithm.<T>paginate(getJsonTable(),page,pageSize,(e)->true);
     }

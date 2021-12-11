@@ -55,30 +55,50 @@ public class ProductController implements BasicGetController<Product> {
     }
 
     @GetMapping("/getFiltered")
-    public List<Product> getProductFiltered(@RequestParam(defaultValue = "1") int page,
+    public List<Product> getProductFiltered(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "2") int pageSize,
-                                            @RequestParam int accountId,
+                                            @RequestParam(defaultValue = "-1") int accountId,
                                             @RequestParam String search,
-                                            @RequestParam(defaultValue = "0") int minPrice,
-                                            @RequestParam(defaultValue = "0") int maxPrice,
+                                            @RequestParam(defaultValue = "0.0") double minPrice,
+                                            @RequestParam(defaultValue = "0.0") double maxPrice,
                                             @RequestParam ProductCategory category){
         List<Product> filtered;
-        if (minPrice!=0 || maxPrice!=0){
-            if(minPrice==0.0){
+        if(accountId<0){
+            if (minPrice!=0.0 || maxPrice!=0.0){
+                if(minPrice==0.0){
+                    filtered = productTable.stream()
+                            .filter(product -> (product.price<=maxPrice && product.category.equals(category))).collect(Collectors.toList());
+                }
+                else if(maxPrice==0.0){
+                    filtered = productTable.stream()
+                            .filter(product -> (product.price>=minPrice  && product.category.equals(category))).collect(Collectors.toList());
+                }
+                else {
+                    filtered = productTable.stream()
+                            .filter(product -> (product.price<=maxPrice && product.price>=minPrice  && product.category.equals(category))).collect(Collectors.toList());
+                }
+            }else {
                 filtered = productTable.stream()
-                        .filter(product -> (product.price<=maxPrice && product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
-            }
-            else if(maxPrice==0.0){
-                filtered = productTable.stream()
-                        .filter(product -> (product.price>=minPrice && product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
-            }
-            else {
-                filtered = productTable.stream()
-                        .filter(product -> (product.price<=maxPrice && product.price>=minPrice && product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
+                        .filter(product -> (product.category.equals(category))).collect(Collectors.toList());
             }
         }else {
-            filtered = productTable.stream()
-                    .filter(product -> (product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
+            if (minPrice!=0.0 || maxPrice!=0.0){
+                if(minPrice==0.0){
+                    filtered = productTable.stream()
+                            .filter(product -> (product.price<=maxPrice && product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
+                }
+                else if(maxPrice==0.0){
+                    filtered = productTable.stream()
+                            .filter(product -> (product.price>=minPrice && product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
+                }
+                else {
+                    filtered = productTable.stream()
+                            .filter(product -> (product.price<=maxPrice && product.price>=minPrice && product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
+                }
+            }else {
+                filtered = productTable.stream()
+                        .filter(product -> (product.accountId == accountId && product.category.equals(category))).collect(Collectors.toList());
+            }
         }
         return Algorithm.<Product>paginate(filtered,page,pageSize,product -> product.name.toLowerCase().contains(search.toLowerCase()));
 
