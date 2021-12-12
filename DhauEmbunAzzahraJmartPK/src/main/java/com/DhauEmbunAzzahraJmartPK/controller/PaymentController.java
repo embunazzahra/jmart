@@ -140,6 +140,18 @@ public class PaymentController implements BasicGetController<Payment> {
         return paymentArrayListList;
     }
 
+    @GetMapping(value = "/byStore")
+    public ArrayList<Payment> getByStore(@RequestParam ArrayList<Integer> productId){
+        ArrayList<Payment> paymentArrayListList = new ArrayList<>();
+        for(int i=0;i<productId.size();i++){
+
+        }
+        List<Payment> list = Algorithm.<Payment>collect(getJsonTable(),e->productId.contains(e.productId));
+        paymentArrayListList.addAll(list);
+        return paymentArrayListList;
+    }
+
+
     @JsonAutowired(value = Payment.class, filepath = "C://Proyek Jmart/Jmart/lib/payment.json")
     public static JsonTable<Payment> paymentTable;
 
