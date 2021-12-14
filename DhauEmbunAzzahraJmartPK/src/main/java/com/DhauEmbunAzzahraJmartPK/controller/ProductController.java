@@ -12,14 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * For product controller
+ * @author Dhau' Embun Azzahra
+ */
 @RestController
 @RequestMapping("/product")
 public class ProductController implements BasicGetController<Product> {
-
+    /**
+     * Method to get product Json Table
+     * @return product Json Table
+     */
     public JsonTable<Product> getJsonTable(){
         return productTable;
     }
 
+    /**
+     * For get request to collect product list of a store.
+     * @param id account id of the store.
+     * @param page page of product list.
+     * @param pageSize page size of product list.
+     * @return product list of a store.
+     */
     @GetMapping(value = "/{id}/store")
     public List<Product> getProductByStore(@PathVariable int id,
                                            @RequestParam int page,
@@ -27,6 +41,18 @@ public class ProductController implements BasicGetController<Product> {
         return Algorithm.<Product>paginate(getJsonTable(),page,pageSize,(e)->e.accountId == id);
     }
 
+    /**
+     * For post request to creates product.
+     * @param accountId account id.
+     * @param name product name.
+     * @param weight product weight.
+     * @param conditionUsed product condition used. true if used, false if new.
+     * @param price product price.
+     * @param discount product discount.
+     * @param category product category.
+     * @param shipmentPlans shipment plan
+     * @return the product that have been made
+     */
     @PostMapping(value = "/create")
     public Product create(@RequestParam int accountId,
                           @RequestParam String name,
@@ -54,6 +80,17 @@ public class ProductController implements BasicGetController<Product> {
         }
     }
 
+    /**
+     * For get request to get all product that have been filtered
+     * @param page page of list.
+     * @param pageSize page size of list.
+     * @param accountId account id.
+     * @param search product name.
+     * @param minPrice minimum price.
+     * @param maxPrice maximum price.
+     * @param category product category.
+     * @return all product that have been filtered with certain page and page size.
+     */
     @GetMapping("/getFiltered")
     public List<Product> getProductFiltered(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "2") int pageSize,
@@ -104,6 +141,10 @@ public class ProductController implements BasicGetController<Product> {
 
     }
 
+    /**
+     * The json table of Product class.
+     * save locally in this path.
+     */
     @JsonAutowired(value = Product.class, filepath = "C://Proyek Jmart/Jmart/lib/product.json")
     public static JsonTable<Product> productTable;
 }

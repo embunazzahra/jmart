@@ -12,6 +12,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.regex.Pattern;
 
+/**
+ *  For account controller
+ * @author Dhau' Embun Azzahra
+ */
 @RestController
 @RequestMapping("/account")
 public class AccountController implements BasicGetController<Account>
@@ -21,10 +25,23 @@ public class AccountController implements BasicGetController<Account>
     public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
     public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
 
+    /**
+     * Method to get account Json Table
+     * @return account Json Table
+     */
     public JsonTable<Account> getJsonTable(){
         return accountTable;
     }
 
+    /**
+     * Post request to make an account logged in
+     * after validate the account existance and matching the email and password
+     * from the database (Json Table)
+     * @param email user's email
+     * @param password user's password
+     * @return The account which the email and password are matched from
+     * the database
+     */
     @PostMapping(value = "/login")
     public Account login(@RequestParam String email, @RequestParam String password){
         Account acc = Algorithm.<Account>find(accountTable, (e)->e.email.equals(email));
@@ -58,6 +75,15 @@ public class AccountController implements BasicGetController<Account>
         }
     }
 
+    /**
+     * Post request for register feature. This will check whether
+     * the parameters match the regex and the email is not being registered yet.
+     * This will add a new account to account Json Table.
+     * @param name account name.
+     * @param email account email.
+     * @param password account password.
+     * @return the account which qualified to register.
+     */
     @PostMapping(value = "/register")
     public Account register(@RequestParam String name,
                             @RequestParam String email,
@@ -98,6 +124,15 @@ public class AccountController implements BasicGetController<Account>
         }
     }
 
+
+    /**
+     * Post request to register store of an account.
+     * @param id account id
+     * @param name store name
+     * @param address store address
+     * @param phoneNumber store phone number
+     * @return the store being registered
+     */
     @PostMapping(value = "/{id}/registerStore")
     public Store registerStore(@PathVariable int id,
                                @RequestParam String name,
@@ -110,6 +145,12 @@ public class AccountController implements BasicGetController<Account>
             return acc.store;
     }
 
+    /**
+     * Post request to top up account balance
+     * @param id account id
+     * @param balance the amount balance to top up
+     * @return if success return true, otherwise false
+     */
     @PostMapping(value = "/{id}/topUp")
     public boolean topUp(@PathVariable int id, @RequestParam double balance){
         Account acc = Algorithm.<Account>find(accountTable, o->o.id==id);
@@ -121,26 +162,11 @@ public class AccountController implements BasicGetController<Account>
         }
     }
 
-
-
-
+    /**
+     * The json table of Account class.
+     * save locally in this path.
+     */
     @JsonAutowired(value = Account.class, filepath = "C://Proyek Jmart/Jmart/lib/account.json")
     public static JsonTable<Account> accountTable;
 
-    /*@GetMapping
-    String index() { return "account page"; }
-
-    @PostMapping("/register")
-    Account register
-            (
-                    @RequestParam String name,
-                    @RequestParam String email,
-                    @RequestParam String password
-            )
-    {
-        return new Account(name, email, password, 0);
-    }
-
-    @GetMapping("/{id}")
-    String getById(@PathVariable int id) { return "account id " + id + " not found!"; }*/
 }

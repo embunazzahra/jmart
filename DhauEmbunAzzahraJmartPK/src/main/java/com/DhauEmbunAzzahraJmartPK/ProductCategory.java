@@ -2,10 +2,9 @@ package com.DhauEmbunAzzahraJmartPK;
 
 
 /**
- * Enumeration class ProductCategory - write a description of the enum class here
+ * Enumeration class ProductCategory is product category
  *
- * @author (your name here)
- * @version (version number or date here)
+ * @author Dhau' Embun Azzahra
  */
 public enum ProductCategory
 {

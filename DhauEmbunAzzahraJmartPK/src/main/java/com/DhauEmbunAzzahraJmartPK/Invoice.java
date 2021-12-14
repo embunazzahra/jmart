@@ -5,6 +5,11 @@ import com.DhauEmbunAzzahraJmartPK.dbjson.Serializable;
 
 import java.util.Date;
 
+/**
+ * This is class for representing an invoice
+ *
+ * @author Dhau' Embun Azzahra
+ * */
 public class Invoice extends Serializable {
     public final Date date = new Date();
     public int buyerId;
@@ -12,7 +17,10 @@ public class Invoice extends Serializable {
     public int complaintId = -1;
     public Rating rating = Rating.NONE;
     public Status status;
-    
+
+    /**
+     * Status represents the order status.
+     */
     public enum Status{
         WAITING_CONFIRMATION,
         CANCELLED,
@@ -23,19 +31,32 @@ public class Invoice extends Serializable {
         FINISHED,
         FAILED;
     }
-    
+
+    /**
+     * Rating represents the order rating from buyer.
+     */
     public enum Rating{
         NONE,
         BAD,
         NEUTRAL,
         GOOD;
     }
-    
+
+    /**
+     * Creates invoice.
+     * @param buyerId The buyer's id
+     * @param productId The product's id
+     */
     protected Invoice(int buyerId, int productId){
         this.buyerId = buyerId;
         this.productId = productId;
     }
 
+    /**
+     * Method to get the total pay
+     * @param product The product
+     * @return the total pay
+     */
     public double getTotalPay(Product product){
         return product.price;
     }
