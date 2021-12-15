@@ -50,8 +50,8 @@ public class Payment extends Invoice {
 
         /**
          * Creates a record of the order history.
-         * @param status
-         * @param message
+         * @param status status of order
+         * @param message the message
          */
         public Record(Status status, String message){
             this.status = status;

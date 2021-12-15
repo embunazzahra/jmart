@@ -7,7 +7,6 @@ package com.DhauEmbunAzzahraJmartPK;
  * */
 public class PhoneTopUp extends Invoice{
     public String phoneNumber;
-    public Status status;
 
     /**
      * Creates a phone top up.
@@ -15,9 +14,10 @@ public class PhoneTopUp extends Invoice{
      * @param productId The product's id
      * @param phoneNumber The phone number
      */
-    public PhoneTopUp(int buyerId, int productId, String phoneNumber){
+    public PhoneTopUp(int buyerId, int productId, String phoneNumber, Status status){
         super(buyerId,productId);
         this.phoneNumber = phoneNumber;
+        super.status = status;
     }
 
     /**

@@ -71,7 +71,7 @@ public class Shipment {
 
     /**
      * Method to check if there is minimum 1 plan match the reference.
-     * @param reference
+     * @param reference plan reference
      * @return true if there is match plan, otherwise false.
      */
     public boolean isDuration(Plan reference){
@@ -85,9 +85,9 @@ public class Shipment {
 
     /**
      * Method to check if there is bit in object that match the reference.
-     * @param object
-     * @param reference
-     * @return
+     * @param object object to compare
+     * @param reference plan referance
+     * @return true if there is match plan, otherwise false.
      */
     public static boolean isDuration(byte object, Plan reference){
         if((object & reference.bit) != 0){
